@@ -76,6 +76,13 @@ const data = [
     address: 'Sidney No. 1 Lake Park',
     tags: ['cool', 'teacher'],
   },
+  {
+    key: '4',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
 ];
 
 const sights = [
@@ -102,7 +109,14 @@ const TabDetail: React.FC = () => {
     </Row>
   );
 };
-
+const basePagination = {
+  current: 1,
+  total: 10,
+  pageSize: 10,
+};
+function onBaseClick(current, pageSize) {
+  console.log(current, pageSize);
+}
 const RecordList: React.FC = () => {
   // const [size, setSize] = React.useState('default');
 
@@ -144,7 +158,24 @@ const RecordList: React.FC = () => {
           <h3>浏览记录列表</h3>
         </Col>
         <Col xs={24} md={24}>
-          <Table pagination={} size="middle" columns={columns} dataSource={data} />
+          <Table
+            pagination={{
+              current: basePagination.current,
+              total: basePagination.total,
+              simple: false,
+              pageSizeOptions: ['10', '20', '30', '40', '50'],
+              showSizeChanger: true,
+              showTotal: (count = basePagination.total) => {
+                return '共' + count + '条数据';
+              },
+              onChange: (current, pageSize) => {
+                onBaseClick(current, pageSize);
+              },
+            }}
+            size="middle"
+            columns={columns}
+            dataSource={data}
+          />
         </Col>
       </Row>
       <TabDetail />
