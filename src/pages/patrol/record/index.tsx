@@ -1,199 +1,154 @@
-import React from 'react';
-import { Button, Tooltip, Dropdown, Menu, Input, Tabs, Row, Col } from 'antd';
-import { EllipsisOutlined, QuestionCircleOutlined, SearchOutlined } from '@ant-design/icons';
-import type { ProColumns } from '@ant-design/pro-table';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import DetailItem from './detail/index';
+import * as React from 'react';
+import { Form, Button, Select, Tabs, Row, Col, Table, Tag, Space } from 'antd';
 import styles from './index.less';
+const { TabPane } = Tabs;
 
-const valueEnum = {
-  0: 'close',
-  1: 'running',
-  2: 'online',
-  3: 'error',
-};
-
-export type TableListItem = {
-  key: number;
-  name: string;
-  containers: number;
-  creator: string;
-  status: string;
-  createdAt: number;
-  progress: number;
-  money: number;
-  memo: string;
-};
-const tableListDataSource: TableListItem[] = [];
-
-const creators = ['付小小', '曲丽丽', '林东东', '陈帅帅', '兼某某'];
-
-for (let i = 0; i < 5; i += 1) {
-  tableListDataSource.push({
-    key: i,
-    name: 'AppName',
-    containers: Math.floor(Math.random() * 20),
-    creator: creators[Math.floor(Math.random() * creators.length)],
-    status: valueEnum[Math.floor(Math.random() * 10) % 4],
-    createdAt: Date.now() - Math.floor(Math.random() * 2000),
-    money: Math.floor(Math.random() * 2000) * i,
-    progress: Math.ceil(Math.random() * 100) + 1,
-    memo: i % 2 === 1 ? '很长很长很长很长很长很长很长的文字要展示但是要留下尾巴' : '简短备注文案',
-  });
-}
-
-const columns: ProColumns<TableListItem>[] = [
+const columns = [
   {
-    title: '排序',
-    dataIndex: 'index',
-    valueType: 'indexBorder',
-    width: 48,
-  },
-  {
-    title: '应用名称',
+    title: 'Name',
     dataIndex: 'name',
-    render: (_) => <a>{_}</a>,
-    // 自定义筛选项功能具体实现请参考 https://ant.design/components/table-cn/#components-table-demo-custom-filter-panel
-    filterDropdown: () => (
-      <div style={{ padding: 8 }}>
-        <Input style={{ width: 188, marginBottom: 8, display: 'block' }} />
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
-    ),
+    key: 'name',
+    render: (text) => <a>{text}</a>,
   },
   {
-    title: '创建者',
-    dataIndex: 'creator',
-    valueEnum: {
-      all: { text: '全部' },
-      付小小: { text: '付小小' },
-      曲丽丽: { text: '曲丽丽' },
-      林东东: { text: '林东东' },
-      陈帅帅: { text: '陈帅帅' },
-      兼某某: { text: '兼某某' },
-    },
+    title: 'Age',
+    dataIndex: 'age',
+    key: 'age',
   },
   {
-    title: '状态',
-    dataIndex: 'status',
-    initialValue: 'all',
-    filters: true,
-    onFilter: true,
-    valueEnum: {
-      all: { text: '全部', status: 'Default' },
-      close: { text: '关闭', status: 'Default' },
-      running: { text: '运行中', status: 'Processing' },
-      online: { text: '已上线', status: 'Success' },
-      error: { text: '异常', status: 'Error' },
-    },
+    title: 'Address',
+    dataIndex: 'address',
+    key: 'address',
   },
   {
-    title: (
+    title: 'Tags',
+    key: 'tags',
+    dataIndex: 'tags',
+    render: (tags) => (
       <>
-        创建时间
-        <Tooltip placement="top" title="这是一段描述">
-          <QuestionCircleOutlined style={{ marginLeft: 4 }} />
-        </Tooltip>
+        {tags.map((tag) => {
+          let color = tag.length > 5 ? 'geekblue' : 'green';
+          if (tag === 'loser') {
+            color = 'volcano';
+          }
+          return (
+            <Tag color={color} key={tag}>
+              {tag.toUpperCase()}
+            </Tag>
+          );
+        })}
       </>
     ),
-    width: 140,
-    key: 'since',
-    dataIndex: 'createdAt',
-    valueType: 'date',
-    sorter: (a, b) => a.createdAt - b.createdAt,
   },
   {
-    title: '备注',
-    dataIndex: 'memo',
-    ellipsis: true,
-    copyable: true,
-  },
-  {
-    title: '操作',
-    width: 180,
-    key: 'option',
-    valueType: 'option',
-    render: () => [
-      <a key="link">链路</a>,
-      <a key="link2">报警</a>,
-      <a key="link3">监控</a>,
-      <TableDropdown
-        key="actionGroup"
-        menus={[
-          { key: 'copy', name: '复制' },
-          { key: 'delete', name: '删除' },
-        ]}
-      />,
-    ],
+    title: 'Action',
+    key: 'action',
+    render: (text, record) => (
+      <Space size="middle">
+        <a>Invite {record.name}</a>
+        <a>Delete</a>
+      </Space>
+    ),
   },
 ];
-const tabdata = ['表单', '附件', '关联表单'];
+
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+    tags: ['nice', 'developer'],
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
+];
+
+const sights = [
+  { label: 'Beijing', value: 'Beijing' },
+  { label: 'Shanghai', value: 'Shanghai' },
+];
+
 const TabDetail: React.FC = () => {
   return (
     <Row className={styles.tab_container} gutter={[0, 48]}>
       <Col xs={24} sm={24} sm={24}>
         <Tabs>
-          {tabdata.map((item, index) => {
-            return <DetailItem tab={item} key={index}></DetailItem>;
-          })}
+          <TabPane tab="检查表单" key="1">
+            3333
+          </TabPane>
+          <TabPane tab="附件" key="2">
+            <div>123--</div>
+          </TabPane>
+          <TabPane tab="受理记录" key="3">
+            3333
+          </TabPane>
         </Tabs>
       </Col>
     </Row>
   );
 };
-
-const menu = (
-  <Menu>
-    <Menu.Item key="1">1st item</Menu.Item>
-    <Menu.Item key="2">2nd item</Menu.Item>
-    <Menu.Item key="3">3rd item</Menu.Item>
-  </Menu>
-);
+function handleChange(value) {
+  console.log(`Selected: ${value}`);
+}
 
 const RecordList: React.FC = () => {
+  const [size, setSize] = React.useState('default');
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
+  const onFinish = (values: any) => {
+    console.log('Success:', values);
+  };
   return (
     <>
-      <ProTable<TableListItem>
-        columns={columns}
-        request={(params, sorter, filter) => {
-          // 表单搜索项会从 params 传入，传递给后端接口。
-          // console.log(params, sorter, filter);
-          return Promise.resolve({
-            data: tableListDataSource,
-            success: true,
-          });
-        }}
-        rowKey="key"
-        pagination={{
-          showQuickJumper: true,
-        }}
-        search={false}
-        dateFormatter="string"
-        toolbar={{
-          title: '高级表格',
-          tooltip: '这是一个标题提示',
-        }}
-        toolBarRender={() => [
-          <Button key="danger" danger>
-            危险按钮
-          </Button>,
-          <Button key="show">查看日志</Button>,
-          <Button type="primary" key="primary">
-            创建应用
-          </Button>,
-          <Dropdown key="menu" overlay={menu}>
-            <Button>
-              <EllipsisOutlined />
-            </Button>
-          </Dropdown>,
-        ]}
-      />
+      <Row className={styles.record_form} style={{ marginBottom: '20px' }} justify="space-between">
+        <Col xs={8} md={8}>
+          <Form
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+          >
+            <Form.Item label="Username" name="username">
+              <Select>
+                {sights.map((item) => (
+                  <Select.Option key={item.value} value={item.value}>
+                    {item.label}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Form>
+        </Col>
+        <Col xs={4} md={4}>
+          <Button type="primary">查询</Button>
+        </Col>
+      </Row>
+      <Row className={styles.record_list}>
+        <Col style={{ marginBottom: '15px' }}>
+          <h3>浏览记录列表</h3>
+        </Col>
+        <Col xs={24} md={24}>
+          <Table pagination={} size="middle" columns={columns} dataSource={data} />
+        </Col>
+      </Row>
       <TabDetail />
-      {/* <Tabs>
-        <DetailItem></DetailItem>
-      </Tabs> */}
     </>
   );
 };

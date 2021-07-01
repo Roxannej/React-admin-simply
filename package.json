@@ -53,6 +53,7 @@
     "@ant-design/pro-layout": "^6.15.3",
     "@ant-design/pro-table": "^2.30.8",
     "@antv/data-set": "^0.11.0",
+    "@antv/g2": "^4.1.19",
     "@antv/l7": "^2.3.7",
     "@antv/l7-maps": "^2.3.7",
     "@antv/l7-react": "^2.1.9",
@@ -75,6 +76,7 @@
     "react-fittext": "^1.0.0",
     "react-helmet-async": "^1.0.4",
     "react-router": "^4.3.1",
+    "size-sensor": "^1.0.1",
     "umi": "^v3.4.0",
     "umi-request": "^1.0.0"
   },

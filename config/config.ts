@@ -111,7 +111,13 @@ export default defineConfig({
           name: '记录浏览',
           icon: 'smile',
           path: '/form/basic-form',
-          component: './form/basic-form',
+          component: './acceptance/browse',
+        },
+        {
+          name: '流程追溯',
+          icon: 'smile',
+          path: '/form/demo',
+          component: './acceptance/demo',
         },
         // {
         //   name: 'step-form',
@@ -292,8 +298,8 @@ export default defineConfig({
     {
       // name:'newdemo',
       // icon:'form',
-      path:'/newdemo',
-      component: './dashboard/workplace/demo1',
+      path:'/investigate',
+      component: './investigate',
     },
     {
       path: '/',
