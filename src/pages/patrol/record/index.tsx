@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Form, Button, Select, Tabs, Row, Col, Table, Tag, Space } from 'antd';
+
 import styles from './index.less';
+
 const { TabPane } = Tabs;
 
 const columns = [
@@ -100,12 +102,9 @@ const TabDetail: React.FC = () => {
     </Row>
   );
 };
-function handleChange(value) {
-  console.log(`Selected: ${value}`);
-}
 
 const RecordList: React.FC = () => {
-  const [size, setSize] = React.useState('default');
+  // const [size, setSize] = React.useState('default');
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);

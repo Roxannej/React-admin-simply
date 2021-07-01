@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Tooltip, Dropdown, Menu, Input, Tabs, Row, Col } from 'antd';
 import { EllipsisOutlined, QuestionCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import DetailItem from './detail/index';
+
 import styles from './index.less';
+
 const { TabPane } = Tabs;
 
 const valueEnum = {
@@ -170,7 +171,7 @@ const RecordList: React.FC = () => {
         columns={columns}
         onClick={chooseItem}
         // onRow={chooseItem}
-        request={(params, sorter, filter) => {
+        request={() => {
           // 表单搜索项会从 params 传入，传递给后端接口。
           // console.log(params, sorter, filter);
           return Promise.resolve({

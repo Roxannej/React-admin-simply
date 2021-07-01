@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Select, DatePicker, Space, Divider } from 'antd';
 import BarChart from '../../../components/Charts/Bar.tsx';
-import Line from '../../../components/Charts/LIne.tsx';
+// import Line from '../../../components/Charts/LIne.tsx';
 import styles from './index.less';
 
 const { Option } = Select;
@@ -11,10 +11,9 @@ export type StaticProps = {
 };
 const dateType = ['按日', '按月', '按年'];
 
-const Statistic: React.FC<StaticProps> = (props) => {
-  const { data } = props;
+const Statistic: React.FC<StaticProps> = () => {
   const [picker, setPicker] = useState<string>('');
-  const [defaultVal, setDefault] = useState<string>('按日');
+  const defaultVal = '按日';
   const chooseDate = (value: string) => {
     // console.log(value);
     if (value === '按日') {
