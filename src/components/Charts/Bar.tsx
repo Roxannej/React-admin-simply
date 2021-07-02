@@ -1,42 +1,30 @@
-// import ReactDOM from 'react-dom';
-import React, { useEffect } from 'react';
+import * as React from 'react';
 import { Chart } from '@antv/g2';
 
-// interface BarProps {
-//   bheight: number;
-//   bpadding: number[];
-// }
+const BarChart = React.forwardRef((props, ref) => {
+  const { gHeight, gPadding, data } = props;
 
-// const destoryG2() => {
-
-// }
-const data = [
-  { type: 'Sports', num: 275 },
-  { type: 'Strategy', num: 115 },
-];
-const BarChart = () => {
-  let unmounted = false;
-  // const $dom = useRef('container');
-
-  useEffect(() => {
+  // componentDidMount
+  React.useEffect(() => {
     const chart = new Chart({
-      container: 'container',
+      container: ref.current,
+      forceFit: true,
       height: 300,
-      width: 300,
     });
+    chart.data(data);
 
-    if (!unmounted) {
-      chart.data(data);
-      chart.interval().position('type*num');
-      chart.render();
-    }
+    chart.interval().position('genre*sold');
 
+    chart.render();
+
+    // componentWillUnmount
     return () => {
-      unmounted = true;
+      chart.changeData(data);
+      chart.destroy();
     };
-  }, []);
+  }, [data]);
 
-  return <div id="container"></div>;
-};
+  return <div id="id" ref={ref}></div>;
+});
 
 export default BarChart;

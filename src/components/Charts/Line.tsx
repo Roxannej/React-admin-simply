@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LineChart from './index';
+import LineChart from './Bar';
 
 const data = [
   { year: '1991', value: 3 },
