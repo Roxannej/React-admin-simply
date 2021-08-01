@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { Form, Button, Select, Tabs, Row, Col, Table, Tag, Space } from 'antd';
 
+import { recordList } from '@/services/ant-design-pro/api';
 import styles from './index.less';
+import { useRequest } from 'ahooks';
+import PicturesWall from '../components/Accessory.tsx';
+import axios from 'axios';
 
 const { TabPane } = Tabs;
 
@@ -23,26 +27,6 @@ const columns = [
     key: 'address',
   },
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (tags) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
     title: 'Action',
     key: 'action',
     render: (text, record) => (
@@ -54,40 +38,48 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-  {
-    key: '4',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
+// const data = [
+//   {
+//     key: '1',
+//     name: 'John Brown',
+//     age: 32,
+//     address: 'New York No. 1 Lake Park',
+//     tags: ['nice', 'developer'],
+//   },
+//   {
+//     key: '2',
+//     name: 'Jim Green',
+//     age: 42,
+//     address: 'London No. 1 Lake Park',
+//     tags: ['loser'],
+//   },
+//   {
+//     key: '3',
+//     name: 'Joe Black',
+//     age: 32,
+//     address: 'Sidney No. 1 Lake Park',
+//     tags: ['cool', 'teacher'],
+//   },
+//   {
+//     key: '4',
+//     name: 'Joe Black',
+//     age: 32,
+//     address: 'Sidney No. 1 Lake Park',
+//     tags: ['cool', 'teacher'],
+//   },
+// ];
 
 const sights = [
   { label: 'Beijing', value: 'Beijing' },
   { label: 'Shanghai', value: 'Shanghai' },
+];
+const picData = [
+  {
+    uid: '-1',
+    name: 'image.png',
+    status: 'done',
+    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  },
 ];
 
 const TabDetail: React.FC = () => {
@@ -96,10 +88,10 @@ const TabDetail: React.FC = () => {
       <Col xs={24} sm={24} sm={24}>
         <Tabs>
           <TabPane tab="检查表单" key="1">
-            3333
+            3333 999
           </TabPane>
           <TabPane tab="附件" key="2">
-            <div>123--</div>
+            <PicturesWall picList={picData} />
           </TabPane>
           <TabPane tab="受理记录" key="3">
             3333
@@ -114,18 +106,66 @@ const basePagination = {
   total: 10,
   pageSize: 10,
 };
-function onBaseClick(current, pageSize) {
-  console.log(current, pageSize);
-}
-const RecordList: React.FC = () => {
-  // const [size, setSize] = React.useState('default');
+// function onBaseClick(current, pageSize) {
+//   console.log(current, pageSize);
+// }
 
+const RecordListData: React.FC = () => {
+  const [tableList, setList] = React.useState<any[]>([]);
+  const [current, setCurrent] = React.useState<number>(1);
+  const [pageSize, setPageSize] = React.useState<number>(10);
+  const [total, setTotal] = React.useState<number>(0);
+  const params = {
+    pageNo: current,
+    pageSize,
+  };
+  const data2 = {
+    pageNo: current,
+    pageSize,
+    params: {},
+  };
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
   const onFinish = (values: any) => {
     console.log('Success:', values);
   };
+  const [data, setData] = React.useState();
+  const getList = async (values: API.ListItem) => {
+    const msg = await recordList({ ...values });
+    if (msg.status === 200) {
+      setData(msg.obj);
+    } else {
+      console.log('错误');
+    }
+  };
+  React.useEffect(() => {
+    getList(params);
+  }, []);
+  // React.useEffect(() => {
+  //   axios({
+  //     data: {
+  //       pageSize: 10,
+  //       pageNo: 1,
+  //       params: {},
+  //     },
+  //     method: 'post',
+  //     url: `http://192.168.50.168:8888/api/supervise/getFacSupervise?pageSize=${params.pageSize}&pageNo=${params.pageNo}`,
+  //     headers: { Authorization: localStorage.getItem('token') },
+  //     contentType: 'application/json;charset=UTF-8',
+  //   }).then((res) => {
+  //     const { obj, status } = res.data;
+  //     if (status === 200) {
+  //       setList(obj.list);
+  //       setTotal(obj.total);
+  //     }
+  //   });
+  // }, [params.pageSize, params.pageNo]);
+  const onChangePage = (currentNum: number, pageSizeNum: number) => {
+    setCurrent(currentNum);
+    setPageSize(pageSizeNum);
+  };
+
   return (
     <>
       <Row className={styles.record_form} style={{ marginBottom: '20px' }} justify="space-between">
@@ -160,21 +200,21 @@ const RecordList: React.FC = () => {
         <Col xs={24} md={24}>
           <Table
             pagination={{
-              current: basePagination.current,
-              total: basePagination.total,
+              current,
+              total,
               simple: false,
               pageSizeOptions: ['10', '20', '30', '40', '50'],
               showSizeChanger: true,
-              showTotal: (count = basePagination.total) => {
-                return '共' + count + '条数据';
+              showTotal: () => {
+                return `共${total}条`;
               },
-              onChange: (current, pageSize) => {
-                onBaseClick(current, pageSize);
+              onChange: (currentN, pageSizeN) => {
+                onChangePage(currentN, pageSizeN);
               },
             }}
             size="middle"
             columns={columns}
-            dataSource={data}
+            dataSource={tableList}
           />
         </Col>
       </Row>
@@ -183,4 +223,4 @@ const RecordList: React.FC = () => {
   );
 };
 
-export default RecordList;
+export default RecordListData;

@@ -2,7 +2,7 @@
 /* eslint-disable */
 
 declare namespace API {
-  type CurrentUser = {
+  type CurrentUserTo = {
     name?: string;
     avatar?: string;
     userid?: string;
@@ -28,6 +28,7 @@ declare namespace API {
     type?: string;
     currentAuthority?: string;
   };
+
 
   type PageParams = {
     current?: number;
@@ -98,4 +99,27 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+
+  // type ListParams = {} | {
+  //   time: string;
+  //   mainKey: string;
+  // }
+
+  type ListItem = {
+    pageNo: number;
+    pageSize: number;
+    params: any;
+  }
+
+  type ListResult = {
+    status?: string;
+    type?: string;
+    // currentAuthority?: string;
+  };
+
+  type picList = {
+    status?: number;
+  }
 }
+
+

@@ -13,8 +13,9 @@ import { useIntl, Link, history, FormattedMessage, SelectLang, useModel } from '
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+import type { CurrentUserTo as MyUserTypeTo } from '../../../../pro-blocks/AccountSettings/src/data.d.ts';
 
-import styles from './index.less';
+import styles from './index1.less';
 
 const LoginMessage: React.FC<{
   content: string;
@@ -35,7 +36,8 @@ const goto = () => {
   setTimeout(() => {
     const { query } = history.location;
     const { redirect } = query as { redirect: string };
-    history.push(redirect || '/');
+    // console.log('----', redirect);
+    history.push(redirect || '/partrol/record');
   }, 10);
 };
 
@@ -61,16 +63,29 @@ const Login: React.FC = () => {
     setSubmitting(true);
     try {
       // 登录
+      // debugger;
       const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
+      if (msg.status === 200) {
         if (localStorage.getItem('token') == null || localStorage.getItem('token') === undefined) {
-          localStorage.setItem('token', '');
+          localStorage.setItem('token', msg.obj.token);
         }
-        localStorage.setItem('token', msg.token);
+        localStorage.setItem('token', msg.obj.token);
         const defaultloginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
         });
+
+        if (localStorage.getItem('name') == null) {
+          localStorage.setItem('name', msg.obj.name);
+        }
+        if (localStorage.getItem('userid') == null) {
+          localStorage.setItem('userid', msg.obj.userId);
+        }
+        const data = {
+          name: msg.obj.name,
+          userid: msg.obj.userid,
+        };
+        localStorage.setItem('data', JSON.stringify(data));
         message.success(defaultloginSuccessMessage);
         await fetchUserInfo();
         goto();
@@ -317,6 +332,12 @@ const Login: React.FC = () => {
       <Footer />
     </div>
   );
+};
+
+export const myself: MyUserTypeTo = {
+  name: localStorage.getItem('name'),
+  userid: localStorage.getItem('userid'),
+  // username: localStorage.getItem('username'),
 };
 
 export default Login;

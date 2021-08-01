@@ -3,8 +3,8 @@ import { Tabs } from 'antd';
 
 const { TabPane } = Tabs;
 
-const Spot: React.FC = () => {
+const Flow: React.FC = () => {
   return <div>88888888</div>;
 };
 
-export default Spot;
+export default Flow;

@@ -3,10 +3,7 @@ import { Table, Tag, Space, Row, Col, Pagination, Tabs } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { history } from 'umi';
 import styles from './index.less';
-import Detail from './components/detail';
-import Deal from './components/deal';
-import Spot from './components/spot';
-import Flow from './components/flow';
+
 import Attachment from './components/attachment';
 
 interface User {
@@ -118,25 +115,7 @@ const BrowseList: React.FC = () => {
         </Col>
       </Row>
       <Row style={{ marginTop: '20px' }} className={styles.browser_page}>
-        <Col>
-          <Tabs defaultActiveKey="1" style={{ padding: '0px 25px 25px 25px' }}>
-            <TabPane tab="受理详情" key="1">
-              <Detail />
-            </TabPane>
-            <TabPane tab="处理结果" key="2">
-              <Deal />
-            </TabPane>
-            <TabPane tab="勘查记录" key="3">
-              <Spot />
-            </TabPane>
-            <TabPane tab="流程追溯" key="5">
-              <Flow />
-            </TabPane>
-            <TabPane tab="附件" key="6">
-              <Attachment />
-            </TabPane>
-          </Tabs>
-        </Col>
+        <Col></Col>
       </Row>
     </div>
   );

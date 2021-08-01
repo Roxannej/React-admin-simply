@@ -3,7 +3,7 @@ import { Tag, message } from 'antd';
 import { groupBy } from 'lodash';
 import moment from 'moment';
 import { useModel } from 'umi';
-import { getNotices } from '@/services/ant-design-pro/api';
+// import { getNotices } from '@/services/ant-design-pro/api';
 
 import NoticeIcon from './NoticeIcon';
 import styles from './index.less';
@@ -76,7 +76,7 @@ const NoticeIconView = () => {
   const [notices, setNotices] = useState<API.NoticeIconItem[]>([]);
 
   useEffect(() => {
-    getNotices().then(({ data }) => setNotices(data || []));
+    // getNotices().then(({ data }) => setNotices(data || []));
   }, []);
 
   const noticeData = getNoticeData(notices);

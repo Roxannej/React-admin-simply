@@ -5,8 +5,11 @@ import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+// import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+// import type { CurrentUserTo as MyUserType } from '../../../../pro-blocks/AccountSettings/src/data.d.ts';
+import { myself } from './pages/user/login/index.tsx';
+// /Applications/nsv - work / work / km2 - form / src / pages / user / Login / index.tsx;
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -16,25 +19,33 @@ export const initialStateConfig = {
   // loading: <PageLoading />,
 };
 
+// export const myself: MyUserType = {
+//   name: localStorage.getItem('name1'),
+//   userid: localStorage.getItem('userid1'),
+//   username: localStorage.getItem('username1'),
+// };
+
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: API.CurrentUserTo;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
-      const currentUser = await queryCurrentUser();
-      return currentUser;
+      const data = await JSON.parse(localStorage.getItem('data'));
+      const msg = { ...data };
+      return msg;
     } catch (error) {
-      history.push(loginPath);
+      history.push('/user/login');
     }
     return undefined;
   };
+
   // 如果是登录页面，不执行
-  if (history.location.pathname !== loginPath) {
+  if (history.location.pathname !== '/user/login' && localStorage.getItem('data')) {
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
@@ -42,6 +53,7 @@ export async function getInitialState(): Promise<{
       settings: {},
     };
   }
+
   return {
     fetchUserInfo,
     settings: {},
@@ -87,8 +99,13 @@ export async function getInitialState(): Promise<{
  * @see https://beta-pro.ant.design/docs/request-cn
  */
 export const request: RequestConfig = {
+  // 判断是否登出
+  headers: {
+    Authorization: `${localStorage.getItem('token')}`,
+  },
   errorHandler: (error: any) => {
     const { response } = error;
+    console.log('------', error);
 
     if (!response) {
       notification.error({

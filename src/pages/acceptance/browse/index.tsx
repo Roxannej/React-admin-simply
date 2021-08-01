@@ -1,19 +1,13 @@
 import * as React from 'react';
-import { Table, Button, Tag, Space, Row, Col, Pagination, Tabs } from 'antd';
+import { Table, Button, Switch, Space, Row, Col, Pagination, Tabs } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { history } from 'umi';
+import NewTab from './components/index.tsx';
 import styles from './index.less';
-import Detail from './components/detail';
-import Deal from './components/deal';
-import Spot from './components/spot';
-import Flow from './components/flow';
-import Attachment from './components/attachment';
 
 interface User {
   key: number;
   name: string;
 }
-const { TabPane } = Tabs;
 // const toInvestigation = () => {
 //   history.push('/investigate');
 // }
@@ -22,56 +16,79 @@ const columns = [
   {
     title: 'Name',
     dataIndex: 'name',
+    key: 'name',
   },
   {
     title: 'Age',
     dataIndex: 'age',
+    key: 'age',
+    width: '12%',
   },
   {
     title: 'Address',
     dataIndex: 'address',
+    width: '30%',
+    key: 'address',
   },
 ];
 
-const data = [];
-for (let i = 0; i < 10; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
+const data = [
+  {
+    key: 1,
+    name: 'John Brown sr.',
+    age: 60,
+    address: 'New York No. 1 Lake Park',
+    children: [
+      {
+        key: 11,
+        name: 'John Brown',
+        age: 42,
+        address: 'New York No. 2 Lake Park',
+      },
+      {
+        key: 12,
+        name: 'John Brown jr.',
+        age: 30,
+        address: 'New York No. 3 Lake Park',
+        children: [
+          {
+            key: 121,
+            name: 'Jimmy Brown',
+            age: 16,
+            address: 'New York No. 3 Lake Park',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    key: 2,
+    name: 'Joe Black',
     age: 32,
-    address: `London, Park Lane no. ${i}`,
-    description: (
-      <div>
-        123<Button>hao</Button>
-      </div>
-    ),
-  });
-}
+    address: 'Sidney No. 1 Lake Park',
+  },
+];
 
 const BrowseList: React.FC = () => {
-  const [selectRow, setRowKey] = React.useState<any[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
-
-  const start = () => {
-    setLoading(true);
-
-    setTimeout(() => {
-      setRowKey([]);
-      setLoading(false);
-    }, 1000);
-  };
-
-  const onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    setRowKey({ selectedRowKeys });
-  };
-
+  const [checkStrictly, setCheckStrictly] = React.useState<boolean>(false);
+  const [curCheck, setCurCheck] = React.useState({});
   const rowSelection = {
-    selectRow,
-    onChange: onSelectChange,
+    onChange: (selectedRowKeys, selectedRows) => {
+      // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    onSelect: (record, selected, selectedRows) => {
+      // console.log(record, selected, selectedRows);
+    },
+    onSelectAll: (selected, selectedRows, changeRows) => {
+      // console.log(selected, selectedRows, changeRows);
+    },
+    renderCell: (checked, record, index, originNode) => {
+      if (record.hasOwnProperty('children')) {
+        return null;
+      }
+      return originNode;
+    },
   };
-
-  const hasSelected = selectRow.length > 0;
 
   return (
     <div>
@@ -97,23 +114,9 @@ const BrowseList: React.FC = () => {
       </Row>
       <Row className={styles.browser_page}>
         <Col xs={24} md={24} style={{ padding: '15px 25px 25px 25px' }}>
-          <div style={{ marginBottom: 16 }}>
-            <Button type="primary" onClick={start} disabled={!hasSelected} loading={loading}>
-              Reload
-            </Button>
-            <span style={{ marginLeft: 8 }}>
-              {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
-            </span>
-          </div>
           <Table
-            size="middle"
-            expandable={{
-              expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.description}</p>,
-              rowExpandable: (record) => record.name !== 'Not Expandable',
-            }}
-            pagination={false}
-            rowSelection={rowSelection}
             columns={columns}
+            rowSelection={{ ...rowSelection, checkStrictly }}
             dataSource={data}
           />
         </Col>
@@ -130,23 +133,7 @@ const BrowseList: React.FC = () => {
       </Row>
       <Row style={{ marginTop: '20px' }} className={styles.browser_page}>
         <Col>
-          <Tabs defaultActiveKey="1" style={{ padding: '0px 25px 25px 25px' }}>
-            <TabPane tab="受理详情" key="1">
-              <Detail />
-            </TabPane>
-            <TabPane tab="处理结果" key="2">
-              <Deal />
-            </TabPane>
-            <TabPane tab="勘查记录" key="3">
-              <Spot />
-            </TabPane>
-            <TabPane tab="流程追溯" key="5">
-              <Flow />
-            </TabPane>
-            <TabPane tab="附件" key="6">
-              <Attachment />
-            </TabPane>
-          </Tabs>
+          <NewTab></NewTab>
         </Col>
       </Row>
     </div>

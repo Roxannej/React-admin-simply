@@ -8,21 +8,27 @@
 export default {
   dev: {
     '/api/': {
-      target: 'https://preview.pro.ant.design',
+      target: 'http://192.168.50.168:8888',
+      //  target: 'http://47.92.144.224:9000',
+      //  target: 'https://preview.pro.ant.design',
       changeOrigin: true,
-      pathRewrite: { '^': '' },
+      pathRewrite: { '^/api': '' },
     },
   },
   test: {
     '/api/': {
-      target: 'https://preview.pro.ant.design',
+      //  target: 'https://preview.pro.ant.design',
+      target: 'http://192.168.50.168:8888',
+      //  target: 'http://47.92.144.224:9000',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
   },
   pre: {
     '/api/': {
-      target: 'your pre url',
+      //  target: 'https://preview.pro.ant.design',
+      target: 'http://192.168.50.168:8888',
+      // target: 'http://47.92.144.224:9000',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },

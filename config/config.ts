@@ -44,10 +44,6 @@ export default defineConfig({
           component: './User/Login',
         },
         {
-          path: '/user',
-          redirect: '/user/login',
-        },
-        {
           name: 'register-result',
           icon: 'smile',
           path: '/user/register-result',
@@ -59,9 +55,7 @@ export default defineConfig({
           path: '/user/register',
           component: './user/register',
         },
-        {
-          component: '404',
-        },
+
       ],
     },
     {
@@ -73,11 +67,7 @@ export default defineConfig({
           name: '记录浏览',
           icon: 'smile',
           path: '/patrol/record',
-          // component: './dashboard/workplace',
-          // component: './dashboard/analysis',
-          // component: './dashboard/workplace/demo'
           component:'./patrol/record'
-
         },
         {
           name: '巡查统计',
@@ -165,9 +155,7 @@ export default defineConfig({
               path: '/list/search/applications',
               component: './list/search/applications',
             },
-          ],
-        },
-        {
+                {
           name: 'table-list',
           icon: 'smile',
           path: '/list/table-list',
@@ -185,24 +173,60 @@ export default defineConfig({
           path: '/list/card-list',
           component: './list/card-list',
         },
-      ],
+          ],
+        },
+      ]
     },
+
+    //     {
+    //       name: 'table-list',
+    //       icon: 'smile',
+    //       path: '/list/table-list',
+    //       component: './list/table-list',
+    //     },
+    //     {
+    //       name: 'basic-list',
+    //       icon: 'smile',
+    //       path: '/list/basic-list',
+    //       component: './list/basic-list',
+    //     },
+    //     {
+    //       name: 'card-list',
+    //       icon: 'smile',
+    //       path: '/list/card-list',
+    //       component: './list/card-list',
+    //     },
+    //   ],
+    // },
     {
-      path: '/profile',
-      name: '系统管理',
-      icon: 'profile',
+      path:'/investigate',
+      name: '受理记录',
+      icon: 'form',
       routes: [
         {
-          name: 'basic',
+          path:'/investigate/list',
+          name: '记录浏览',
+          icon: 'form',
+          component:'./investigate/list'
+        }
+      ]
+    },
+    {
+      path: '/management',
+      name: '系统管理',
+      icon: 'form',
+      routes: [
+        {
+          name: '位置分布',
           icon: 'smile',
-          path: '/profile/basic',
-          component: './profile/basic',
+          path: '/management/position',
+          component: './management/position',
         },
         {
-          name: 'advanced',
+          name: '历史轨迹',
           icon: 'smile',
-          path: '/profile/advanced',
-          component: './profile/advanced',
+          path: '/management/track',
+          component: './management/track',
         },
       ],
     },
@@ -250,25 +274,25 @@ export default defineConfig({
     //     },
     //   ],
     // },
-    {
-      name: 'account',
-      icon: 'user',
-      path: '/account',
-      routes: [
-        {
-          name: 'center',
-          icon: 'smile',
-          path: '/account/center',
-          component: './account/center',
-        },
-        {
-          name: 'settings',
-          icon: 'smile',
-          path: '/account/settings',
-          component: './account/settings',
-        },
-      ],
-    },
+    // {
+    //   name: 'account',
+    //   icon: 'user',
+    //   path: '/account',
+    //   routes: [
+    //     {
+    //       name: 'center',
+    //       icon: 'smile',
+    //       path: '/account/center',
+    //       component: './account/center',
+    //     },
+    //     {
+    //       name: 'settings',
+    //       icon: 'smile',
+    //       path: '/account/settings',
+    //       component: './account/settings',
+    //     },
+    //   ],
+    // },
     // {
     //   name: 'editor',
     //   icon: 'highlight',
